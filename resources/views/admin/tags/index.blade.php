@@ -24,10 +24,10 @@
         @foreach ($tags as $tag)
             <tbody>
               <tr class="align-middle">
-                <td class="text-white">{{$tag->id}}</td>
-                <td class="text-white">{{$tag->name}}</td>
-                <td class="text-white">{{$tag->slug}}</td>
-                <td class="text-white col-sm-3"> 
+                <td>{{$tag->id}}</td>
+                <td>{{$tag->name}}</td>
+                <td>{{$tag->slug}}</td>
+                <td class="col-sm-3"> 
                     <div class="d-flex justify-content-around">
                         <a class="btn btn-outline-primary m-2 btn-sm btn-square" href="{{route('admin.tags.show', $tag->slug)}}" title="Visualizza tag"><i class="fas fa-eye"></i></a>
                         <a class="btn btn-outline-warning m-2 btn-sm btn-square" href="{{route('admin.tags.edit', $tag->slug)}}" title="Modifica tag"><i class="fas fa-edit"></i></a>

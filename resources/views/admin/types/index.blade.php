@@ -28,10 +28,10 @@
     @foreach ($types as $type)
         <tbody>
           <tr class="align-middle">
-            <td class="text-white">{{$type->id}}</td>
-            <td class="text-white">{{$type->name}}</td>
-            <td class="text-white">{{$type->slug}}</td>
-            <td class="text-white col-sm-3"> 
+            <td>{{$type->id}}</td>
+            <td>{{$type->name}}</td>
+            <td>{{$type->slug}}</td>
+            <td class="col-sm-3"> 
                 <div class="d-flex justify-content-around">
                     <a class="btn btn-outline-primary m-2 btn-sm btn-square" href="{{route('admin.types.show', $type->slug)}}" title="Visualizza type"><i class="fas fa-eye"></i></a>
                     <a class="btn btn-outline-warning m-2 btn-sm btn-square" href="{{route('admin.types.edit', $type->slug)}}" title="Modifica type"><i class="fas fa-edit"></i></a>
