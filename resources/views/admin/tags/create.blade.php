@@ -3,7 +3,7 @@
 <div class="container create">
     <div class="row">
         <div class="col-12 text-center m-4">
-            <h2 class="text-white">Aggiungi nuovo livello di difficoltà.</h2>
+            <h2 class="text-white">Aggiungi nuovo tag.</h2>
         </div>
         <div class="col-12">
             <form action="{{route('admin.tags.store')}}" method="POST">

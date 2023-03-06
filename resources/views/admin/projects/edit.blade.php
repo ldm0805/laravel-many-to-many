@@ -33,7 +33,7 @@
             </div>
             <div class="form-group mb-3">
                 <label class="control-label mb-2">
-                    Tipo
+                    Tags
                 </label>
                 @foreach($tags as $tag)
                 <div class="form-check @error('tags') is-invalid @enderror">
