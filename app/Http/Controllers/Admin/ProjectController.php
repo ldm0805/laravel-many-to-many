@@ -137,7 +137,6 @@ class ProjectController extends Controller
 
         //Elimino il project dal database;
         $project->delete();
-
         // Reindirizzamento all'index con messaggio di conferma eliminazione
         return redirect()->route('admin.projects.index')->with('message', 'La cancellazione del project '.$project->title.' è andata a buon fine.');
     }

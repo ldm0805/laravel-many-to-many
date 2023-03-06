@@ -38,22 +38,19 @@
                     <article class="containerImagenCard">
                         <img src="https://cdn.pixabay.com/photo/2018/02/07/14/27/pension-3137209_640.jpg" alt="">
                     </article>
-                    <article class="containerDescriptionCard">
-                        <p class="titleCard text-dark" >Progetto:</p>
-                        <p class="titleCard text-dark">{{$item->title}}</p>
-                        <p class="tecnologiesCard">Data: {{ $utils->changeDate($item->date_project) }}</p>
-                        <p class="tecnologiesCard">{{$item->slug}}</p>
-                        <p class="tecnologiesCard">Tipo: {{$item->type ? $item->type->name : 'Mancante'}}</p>
-                        <p class="descriptionCard">Contenuto: {{$item->content}}</p>
-                        <a class="btn btn-sm btn-square btn-primary" href="{{route('admin.projects.show', $item->slug)}}" title="Visualizza project"><i class="fas fa-eye"></i></a>
-                        <a class="btn btn-sm btn-square btn-warning" href="{{route('admin.projects.edit', $item->slug)}}" title="Modifica project"><i class="fas fa-edit"></i></a>
-                        <form class="d-inline-block" action="{{route('admin.projects.destroy', $item->slug)}}" method="POST">
-                            @csrf
-                            @method('DELETE')
-                            <button class="btn btn-outline-danger m-2 btn-sm btn-square confirm-delete-button" type="submit" title="Cancella">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </form>
+                    <article class="containerDescriptionCard d-flex flex-column">
+                        <div class="mb-auto">
+                            <p class="titleCard text-dark" >Progetto:</p>
+                            <p class="titleCard text-dark">{{$item->title}}</p>
+                            <p class="tecnologiesCard">Data: {{ $utils->changeDate($item->date_project) }}</p>
+                            <p class="tecnologiesCard">{{$item->slug}}</p>
+                            <p class="tecnologiesCard">Tipo: {{$item->type ? $item->type->name : 'Mancante'}}</p>
+                            <p class="descriptionCard">Contenuto: {{$item->content}}</p>
+                        </div>
+                        <div>
+                            <a class="btn btn-sm btn-square btn-primary" href="{{route('admin.projects.show', $item->slug)}}" title="Visualizza project"><i class="fas fa-eye"></i></a>
+                            <a class="btn btn-sm btn-square btn-warning" href="{{route('admin.projects.edit', $item->slug)}}" title="Modifica project"><i class="fas fa-edit"></i></a>
+                        </div>
                     </article>
                 </section>
                 @empty
