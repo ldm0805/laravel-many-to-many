@@ -3,12 +3,12 @@
 @section('content')
 <div class="container-fluid">
     <div class="text-center text-white mt-4">
-        <h1 class="mb-4">Benvenuto nelle tue categorie!</h1>
+        <h1 class="mb-4">Benvenuto nei tuoi livelli di difficoltà!</h1>
     </div>
     <div class="my-3">
         <a href="{{route('admin.types.create')}}" class="btnblue">
             <i class="fa-solid fa-plus-square fa-fw fa-lg mr-2"></i>
-            Aggiungi un nuovo tipo
+            Aggiungi un nuovo livello
         </a>
             @if(session('message'))
             <div class="alert alert-primary">

@@ -3,7 +3,7 @@
 <div class="container create">
     <div class="row">
         <div class="col-12 text-center m-4">
-            <h2 class="text-white">Aggiungi nuovo project</h2>
+            <h2 class="text-white">Aggiungi nuovo livello di difficoltà.</h2>
         </div>
         <div class="col-12">
             <form action="{{route('admin.types.store')}}" method="POST">

@@ -64,11 +64,11 @@
                                 </a>
                                 <a class="nav-link text-white {{ Route::currentRouteName() == 'admin.types.index' ? 'bg-secondary' : '' }}" href="{{route('admin.types.index')}}">
                                     <i class="fa-solid fa-newspaper fa-lg fa-fw"></i> 
-                                    Tipi
+                                    Livelli di difficoltà
                                 </a>
                                 <a class="nav-link text-white {{ Route::currentRouteName() == 'admin.types.create' ? 'bg-secondary' : '' }}" href="{{route('admin.types.create')}}">
                                     <i class="fa-solid fa-square-plus fa-lg fa-fw"></i>
-                                    Aggiungi un nuovo tipo.
+                                    Aggiungi un nuovo livello di difficoltà.
                                 </a>
                                 <a class="nav-link text-white {{ Route::currentRouteName() == 'admin.tags.index' ? 'bg-secondary' : '' }}" href="{{route('admin.tags.index')}}">
                                     <i class="fa-solid fa-tag fa-lg fa-fw"></i>
