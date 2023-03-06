@@ -1,0 +1,204 @@
+MANY TO MANY
+
+Tabella ponte 
+php artisan make:migration create_role_user_table
+deve contenere i nomi dei due model che deve collegare, in ordine alfabetico, in minuscolo,al singolare e collegati da underscore (es. create_role_user_table).
+
+2 metodi per aggiungere altre colonne nella tabella ponte
+attach:
+- Creiamo una relazione
+    $user = User::find(1);
+    $user->roles()->attach($roleId);
+- Eliminiamo la relazione
+    $user = User::find(1);
+    $user->roles()->detach($roleId); //prendo i ruoli e cancello quello con $roleId = x;
+    se non mettiamo l'id eliminiamo tutte le relazioni
+    $user->roles()->detach();
+- aggiungere ed eliminare contemporaneamente dei record
+    $user = User::find(1);
+    $user->roles()->sync([1,2,3]); //vuole un'array di id, se gli id che sono presenti nella tabella ponte non si trovano nell'array che abbiamo passato nel sinc, toglierà il record (es. in questo caso se avessimo nei record 4,5,6 li eliminerebbe)
+
+- codice
+
+php artisan make:model Tag -rcms --requests
+- model
+
+    class Type extends Model
+    {
+        use HasFactory;
+        protected $fillable= ['name', 'slug'];
+
+        public static function generateSlug($title){
+            return Str::slug($title, '-');
+        }
+        public function project(){
+            return $this->hasMany(Project::class);
+        }
+    }
+
+- Migration
+    public function up()
+    {
+        Schema::create('tags', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 70)->unique();
+            $table->string('slug', 70);
+            $table->timestamps();
+        });
+    }
+
+- seeder
+    <?php
+
+    namespace Database\Seeders;
+
+    use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+    use Illuminate\Database\Seeder;
+    use App\Models\Tag;
+    class TagSeeder extends Seeder
+    {
+        /**
+        * Run the database seeds.
+        *
+        * @return void
+        */
+        public function run()
+        {
+            $tags = ['html', 'css', 'javascript', 'vuejs', 'php', 'oop', 'mysql','laravel'];
+
+            foreach($tags as $tag){
+                $newTag = new Tag();
+                $newTag->name = $tag;
+                $newTag->slug = Tag::generateSlug($newTag->name);
+
+                $newTag->save();
+            }
+        }
+    }
+
+- lancio il seeder:  php artisan db:seed --class=TagSeeder
+comando:
+- php artisan make:migration create_project_tag_table (project e tag nomi dei model al singolare, minuscolo ed in ordine alfabetico)
+    <?php
+
+    use Illuminate\Database\Migrations\Migration;
+    use Illuminate\Database\Schema\Blueprint;
+    use Illuminate\Support\Facades\Schema;
+
+    return new class extends Migration
+    {
+        /**
+        * Run the migrations.
+        *
+        * @return void
+        */
+        public function up()
+        {
+            Schema::create('project_tag', function (Blueprint $table) {
+                $table->id();
+                //creo la colonna per il project
+                $table->unsignedBigInteger('project_id');
+                //creo la colonna per il foreign
+                $table->foreign('project_id')->references('id')->on('projects');
+                //creo la colonna per il tag
+                $table->unsignedBigInteger('tag_id');
+                //creo la colonna per la foreign
+                $table->foreign('tag_id')->references('id')->on('tags');
+
+                $table->timestamps();
+            });
+        }
+
+        /**
+        * Reverse the migrations.
+        *
+        * @return void
+        */
+        public function down()
+        {
+            Schema::dropIfExists('project_tag');
+        }
+    };
+- lancio la migrations
+- aggiorno il file web.php:
+    Route::middleware(['auth', 'verified'])->name('admin.')->prefix('admin')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('projects', ProjectController::class)->parameters(['projects' => 'project:slug']);
+    Route::resource('types', TypeController::class)->parameters(['types' => 'type:slug']);
+    Route::resource('tags', TagController::class)->parameters(['tags' => 'tag:slug']);
+
+});
+- creo la cartella tags con dentro il file index.blade.php (lo modifico)
+- nel typecontroller definisco la index
+- creo la rotta per tags in admin.blade.php
+
+nei model: 
+- tag 
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Factories\HasFactory;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Support\Str;
+    class Tag extends Model
+    {
+        use HasFactory;
+        protected $fillable =['name', 'slug'];
+        
+        public static function generateSlug($name){
+            return Str::slug($name, '-');
+        }
+        public function projects(){
+            return $this->belongsToMany(Project::class);
+
+        }
+    }
+- project
+- aggiungere type_id nel $fillable di project
+
+    <?php
+
+    namespace App\Models;
+
+    use Illuminate\Database\Eloquent\Factories\HasFactory;
+    use Illuminate\Database\Eloquent\Model;
+    use Illuminate\Support\Str;
+
+    class Project extends Model
+    {
+        use HasFactory;
+        protected $fillable=['title', 'content', 'slug','date_project','type_id','tag_id'];
+
+        public static function generateSlug($title){
+            return Str::slug($title, '-');
+        }
+        
+        public function type(){
+            return $this->belongsTo(Type::class);
+        }
+
+        public function tags(){
+            return $this->belongsToMany(Tag::class);
+
+        }
+    }
+
+- andiamo nel create di project:
+    <div class="form-group mb-3">
+        <label class="control-label mb-2">
+            Tipo
+        </label>
+        @foreach($tags as $tag)
+        {{-- Se può essere selezionato più di un valore devono essere messe le parentesi quadre nel name , crei tipo un'array--}}
+        <input type="checkbox" value={{$tag->id}} name="tags[]"> 
+        <label class="form-check-label">{{$tag->name}}</label>
+        @endforeach
+    </div>
+
+- store di project, dopo il create:
+if($request->has('tags')){
+    $newProj->tags()->attach($request->tags);
+}
+
+- edit

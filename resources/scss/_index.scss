@@ -1,0 +1,115 @@
+button.btnblue,
+a.btnblue {
+    color: white;
+    background-color: #000154;
+    padding: 1em;
+    text-decoration: none;
+    border-radius: .5em;
+
+    &:hover {
+        background-color: #000277;
+    }
+}
+
+div#index {
+    margin: 3.6em 0em;
+    display: flex;
+    flex-wrap: wrap;
+
+
+    .card {
+        position: relative;
+        width: calc(100% / 3 - 5em);
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+        cursor: pointer;
+        perspective: 15rem;
+        margin: 2.5em;
+    }
+
+    .card:hover .containerDescriptionCard {
+        transform: rotateX(-4deg);
+        transform-origin: bottom;
+        box-shadow: 10px 10px 10px #000;
+        box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.12);
+    }
+
+    .card:hover .containerImagenCard {
+        top: -20%;
+    }
+
+    .card:hover .containerImagenCard::after {
+        content: "";
+        opacity: 0.5;
+    }
+
+    .card .containerImagenCard {
+        transition: all 0.5s;
+        overflow: hidden;
+        position: absolute;
+        width: 95%;
+        height: 50%;
+        z-index: -1;
+        top: -10%;
+        left: 2.5%;
+    }
+
+    .card .containerImagenCard::after {
+        content: "";
+        position: absolute;
+        opacity: 0.2;
+        top: 0px;
+        left: 0px;
+        width: 100%;
+        height: 100%;
+        background: #0003a3;
+        transition: all 0.5s;
+    }
+
+    .card .containerImagenCard img {
+        min-width: 100%;
+        min-height: 100%;
+        transition: all 0.5s;
+    }
+
+    .card .containerDescriptionCard {
+        transition: all 0.5s;
+        width: 100%;
+        height: 100%;
+        background: #FFF;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .card .containerDescriptionCard .titleCard {
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+
+    .card .containerDescriptionCard .tecnologiesCard {
+        font-size: 0.9rem;
+        color: #8c8c8c;
+        margin-bottom: 10px;
+        overflow: hidden;
+    }
+
+    .card .containerDescriptionCard .descriptionCard {
+        border-top: 1px solid #eee;
+        padding-top: 10px;
+        font-size: 0.8rem;
+        color: #8c8c8c;
+        overflow: hidden;
+        height: 80px;
+        position: relative;
+        text-align: justify;
+    }
+
+    .card .containerDescriptionCard .descriptionCard::after {
+        content: "...";
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+        width: 100%;
+        height: 1rem;
+        background: #FFF;
+    }
+}
