@@ -53,7 +53,7 @@ class TagController extends Controller
        $newProj = Tag::create($form_data);
    
        // Reindirizzamento all'index con messaggio di conferma crezione
-       return redirect()->route('admin.tags.index')->with('message', 'Il tag è stato creato correttamente');
+       return redirect()->route('admin.tags.index')->with('message', 'Il nuovo tag è stato creato correttamente');
     }
 
     /**
@@ -112,6 +112,6 @@ class TagController extends Controller
     {
         $tag->delete();
 
-        return redirect()->route('admin.tags.index')->with('message', 'La cancellazione del project '.$tag->name.' è andata a buon fine.');
+        return redirect()->route('admin.tags.index')->with('message', 'La cancellazione del tag '.$tag->name.' è andata a buon fine.');
     }
 }

@@ -5,10 +5,10 @@
     <div class="text-center text-white mt-4">
         <h1 class="mb-4">Benvenuto nei tuoi livelli di difficoltà!</h1>
     </div>
-    <div class="my-3">
-        <a href="{{route('admin.types.create')}}" class="btnblue">
+    <div>
+        <a href="{{route('admin.types.create')}}" class="btnblue my-3">
             <i class="fa-solid fa-plus-square fa-fw fa-lg mr-2"></i>
-            Aggiungi un nuovo livello
+            Aggiungi un nuovo livello di difficoltà
         </a>
             @if(session('message'))
             <div class="alert alert-primary">

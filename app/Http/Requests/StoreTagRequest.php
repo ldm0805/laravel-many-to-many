@@ -32,7 +32,7 @@ class StoreTagRequest extends FormRequest
             'name.required' => 'Il titolo è obbligatorio',
             'name.unique' => 'Questo tipo è già presente nella pagina',
             'name.max' => 'Il nome non può essere più lungo di :max caratteri.',
-            'name.unique' => 'Questo tipo è già presente nella pagina',
+            'name.unique' => 'Questo tag è già presente nella pagina',
         ];
 }
 }

@@ -58,7 +58,7 @@ class TypeController extends Controller
        $newProj = Type::create($form_data);
    
        // Reindirizzamento all'index con messaggio di conferma crezione
-       return redirect()->route('admin.types.index')->with('message', 'Il type è stato creato correttamente');
+       return redirect()->route('admin.types.index')->with('message', 'Il nuovo livello di difficoltà è stato creato correttamente');
     }
 
     /**
@@ -104,7 +104,7 @@ class TypeController extends Controller
    
        $type->update($form_data);
        
-       return redirect()->route('admin.types.index')->with('message', 'La modifica del tipo '.$type->name.' è andata a buon fine.');
+       return redirect()->route('admin.types.index')->with('message', 'La modifica del livello di difficoltà '.$type->name.' è andata a buon fine.');
     }
 
     /**
@@ -117,6 +117,6 @@ class TypeController extends Controller
     {
         $type->delete();
 
-        return redirect()->route('admin.types.index')->with('message', 'La cancellazione del project '.$type->title.' è andata a buon fine.');
+        return redirect()->route('admin.types.index')->with('message', 'La cancellazione del livello di difficoltà '.$type->title.' è andata a buon fine.');
     }
 }

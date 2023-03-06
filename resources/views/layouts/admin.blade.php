@@ -74,11 +74,10 @@
                                     <i class="fa-solid fa-tag fa-lg fa-fw"></i>
                                     Tags.
                                 </a>
-{{--                                 
-                                <a class="nav-link text-white {{ Route::currentRouteName() == 'admin.types.create' ? 'bg-secondary' : '' }}" href="{{route('admin.types.create')}}">
+                                <a class="nav-link text-white {{ Route::currentRouteName() == 'admin.tags.create' ? 'bg-secondary' : '' }}" href="{{route('admin.tags.create')}}">
                                     <i class="fa-solid fa-tag fa-lg fa-fw"></i>
-                                    Aggiungi un nuovo tags.
-                                </a> --}}
+                                    Aggiungi un nuovo tag.
+                                </a> 
                             </li>
 
                         </ul>

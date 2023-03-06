@@ -33,7 +33,7 @@ class UpdateTagRequest extends FormRequest
     public function messages(){
         return[
             'name.required' => 'Il titolo è obbligatorio',
-            'name.unique' => 'Il project con questo titolo è già presente nella pagina',
+            'name.unique' => 'Il tag con questo titolo è già presente nella pagina',
             'name.max' => 'Il titolo può essere lungo al massimo :max caratteri.',
 
         ];

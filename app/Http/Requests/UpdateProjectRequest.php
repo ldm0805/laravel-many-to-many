@@ -41,11 +41,11 @@ class UpdateProjectRequest extends FormRequest
     public function messages(){
         return[
             'title.required' => 'Il titolo è obbligatorio',
-            'title.unique' => 'Il project con questo titolo è già presente nella pagina',
+            'title.unique' => 'Il progetto con questo titolo è già presente nella pagina',
             'title.max' => 'Il titolo può essere lungo al massimo :max caratteri.',
             'date_project.date_format' => 'La data inserita non è nel formato corretto',
-            'type_id.exists' => 'La categoria selezionata non è valida',
-            'tags.exists' => 'il tag selezionato non è valido',
+            'type_id.exists' => 'La livello di difficoltà selezionato non è valido',
+            'tags.exists' => 'Il tag selezionato non è valido',
 
 
         ];

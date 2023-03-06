@@ -5,12 +5,11 @@
     <div class="text-center text-white mt-4">
         <h1>Benvenuto nei tuoi tags!</h1>
     </div>
-    <div class="my-5">
-        <a href="{{route('admin.projects.create')}}" class="btnblue m-5">
+    <div>
+        <a href="{{route('admin.projects.create')}}" class="btnblue my-5">
             <i class="fa-solid fa-plus-square fa-fw fa-lg mr-2"></i>
             Aggiungi un nuovo progetto.
         </a>
-       
     </div>
     <div>
         <table class="table table-striped table-bordered">
