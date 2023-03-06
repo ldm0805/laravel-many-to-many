@@ -28,7 +28,8 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        $tags = Tag::all();
+        return view('admin.tags.create', compact('tags'));
     }
 
     /**
@@ -39,7 +40,20 @@ class TagController extends Controller
      */
     public function store(StoreTagRequest $request)
     {
-        //
+         // Ottengo i dati validati dalla richiesta
+       $form_data = $request->validated();
+    
+       // Genero uno slug tramite una funzione (project.php) dal titolo del progetto
+       $slug = Tag::generateSlug($request->name, '-');
+   
+       // Lo slug viene aggiunto ai dati del form
+       $form_data['slug'] = $slug;
+   
+       // Creo un nuovo progetto nel database utilizzando i dati del form
+       $newProj = Tag::create($form_data);
+   
+       // Reindirizzamento all'index con messaggio di conferma crezione
+       return redirect()->route('admin.tags.index')->with('message', 'Il tag è stato creato correttamente');
     }
 
     /**
@@ -50,7 +64,7 @@ class TagController extends Controller
      */
     public function show(Tag $tag)
     {
-        //
+        return view('admin.tags.show', compact('tag'));
     }
 
     /**
@@ -61,7 +75,8 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        //
+        return view('admin.tags.edit', compact('tag'));
+        
     }
 
     /**
@@ -73,7 +88,18 @@ class TagController extends Controller
      */
     public function update(UpdateTagRequest $request, Tag $tag)
     {
-        //
+        // Ottengo i dati validati dalla richiesta
+        $form_data = $request->validated();
+            
+        // Genero uno slug tramite una funzione (project.php) dal titolo del progetto
+        $slug = Tag::generateSlug($request->name, '-');
+
+        // Lo slug viene aggiunto ai dati del form
+        $form_data['slug'] = $slug;
+
+        $tag->update($form_data);
+        
+        return redirect()->route('admin.tags.index')->with('message', 'La modifica del tag '.$tag->name.' è andata a buon fine.');
     }
 
     /**
@@ -84,6 +110,8 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        $tag->delete();
+
+        return redirect()->route('admin.tags.index')->with('message', 'La cancellazione del project '.$tag->name.' è andata a buon fine.');
     }
 }

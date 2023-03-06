@@ -104,7 +104,7 @@ class TypeController extends Controller
    
        $type->update($form_data);
        
-       return redirect()->route('admin.types.index')->with('message', 'La modifica del project '.$type->name.' è andata a buon fine.');
+       return redirect()->route('admin.types.index')->with('message', 'La modifica del tipo '.$type->name.' è andata a buon fine.');
     }
 
     /**

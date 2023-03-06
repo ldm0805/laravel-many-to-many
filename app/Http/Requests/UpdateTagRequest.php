@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule; //Obbligatorio per usare rule
+
 
 class UpdateTagRequest extends FormRequest
 {
@@ -13,7 +15,7 @@ class UpdateTagRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +26,16 @@ class UpdateTagRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => ['required', Rule::unique('types')->ignore($this->type), 'max:50'],
+            
+    ];
+    }
+    public function messages(){
+        return[
+            'name.required' => 'Il titolo è obbligatorio',
+            'name.unique' => 'Il project con questo titolo è già presente nella pagina',
+            'name.max' => 'Il titolo può essere lungo al massimo :max caratteri.',
+
         ];
     }
 }
