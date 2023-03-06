@@ -60,7 +60,7 @@
                                 </a>
                                 <a class="nav-link text-white {{ Route::currentRouteName() == 'admin.projects.create' ? 'bg-secondary' : '' }}" href="{{route('admin.projects.create') }}">
                                     <i class="fa-solid fa-square-plus fa-lg fa-fw"></i>
-                                    Aggiungi un nuovo project.
+                                    Aggiungi un nuovo progetto
                                 </a>
                                 <a class="nav-link text-white {{ Route::currentRouteName() == 'admin.types.index' ? 'bg-secondary' : '' }}" href="{{route('admin.types.index')}}">
                                     <i class="fa-solid fa-newspaper fa-lg fa-fw"></i> 

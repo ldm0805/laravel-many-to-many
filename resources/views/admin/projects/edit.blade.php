@@ -20,7 +20,7 @@
             </div>
             <div class="form-group mb-3">
                 <label class="control-label mb-2">
-                    Categoria
+                    Difficoltà
                 </label>
               <select class="form-control" name="type_id" id="type_id">
                 @foreach($types as $type)
