@@ -46,8 +46,6 @@ class UpdateProjectRequest extends FormRequest
             'date_project.date_format' => 'La data inserita non è nel formato corretto',
             'type_id.exists' => 'La livello di difficoltà selezionato non è valido',
             'tags.exists' => 'Il tag selezionato non è valido',
-
-
         ];
     }
 }

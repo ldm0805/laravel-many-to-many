@@ -118,7 +118,6 @@ class ProjectController extends Controller
 
        if($request->has('tags')){
             $project->tags()->sync($request->tags);
-
        }
        
        return redirect()->route('admin.projects.index')->with('message', 'La modifica del project '.$project->title.' è andata a buon fine.');
