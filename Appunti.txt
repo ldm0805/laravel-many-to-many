@@ -11,13 +11,25 @@ Inizializzazione progetto
 - npm run dev
 
 Upload file:
+
 - andare nel file config/filesystems.php 
     cambiare: 'default' =>env('FILESYSTEM_DISK', 'public'), da local a public
     file .env cambiare: 
     FILESYSTEM_DISK=da local a public
-- lanciare il comando php artisan storage:link per creare un symlink: 
+
+- lanciare il comando | php artisan storage:link |per creare un symlink: 
+
 - form per caricare i dati: IMPORTANTE L'ENCTYPE, SENNò NON FA L'UPLOAD
-<form action=".." method="post" enctype="multipart/form-data">
+
+    <form action=".." method="post" enctype="multipart/form-data">
+        <div class="form-group mb-3">
+            <label class="control-label mb-2">
+                Copertina
+            </label>
+            <input type="file" class="form-control @error('cover_image') is-invalid @enderror" id="cover_image" name="cover_image">
+                {{-- @error('cover_image') @enderror  --}}
+        </div>
+
 - nel controller:
 use Illuminate\Support\Facades\Storage;
 public function store(){
@@ -82,14 +94,15 @@ return new class extends Migration
         use Illuminate\Support\Facades\Storage;
 
 - metodo update:
-    if($request->has('cover_image')){
-        if($project->cover_image){
-            Storage::delete($project->cover_image);
+    
+        if($request->hasFile('cover_image')){
+            if($project->cover_image){
+                Storage::delete($project->cover_image);
+            }
+            
+        $path = Storage::disk('public')->put('project_images', $request->cover_image);
+        $form_data['cover_image'] = $path;
         }
-        
-    $path = Storage::disk('public')->put('project_images', $request->cover_image);
-    $form_data['cover_image'] = $path;
-    }
 
 
 - aggiungere le regole di validazione nello StoreProjectRequest e nell'UpdateProjectRequest
@@ -102,8 +115,135 @@ return new class extends Migration
 - visualizzare l'immagine recuperata
 <img class="img-top" src="{{asset('storage/'.$project->cover_image)}}" alt="{{$project->title}}">
 
+REGISTRAZIONE MAIL
+- comando per installare questa libreria
 
+composer require guzzlehttp/guzzle
 
+- per l'invio del testo usiamo mailtrap.io, i dati da modificare nel .env li troviamo su mailtrap.io :
+email testing->inboxes->selezioniamo laravel 7+
+cambiare nel file .env (31)
+MAIL_MAILER=smtp
+MAIL_HOST=sandbox.smtp.mailtrap.io
+MAIL_PORT=2525
+MAIL_USERNAME=f71bfb97df42b7
+MAIL_PASSWORD=5ef53d88c4930b
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS="info@boolpress.it"
+MAIL_FROM_NAME="${APP_NAME}"
+
+- creiamo l'oggetto Mailable con il comando:
+    php artisan make:mail NomeOggetto
+    definire la variabile $lead nel nuovo oggetto Mailable
+    definire il costruttore Mailable
+    definire il contenuto di envelop e content
+
+    <?php
+
+namespace App\Mail;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Content;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Queue\SerializesModels;
+
+class NewContact extends Mailable
+{
+    use Queueable, SerializesModels;
+
+    public $lead;
+
+    /**
+     * Create a new message instance.
+     *
+     * @return void
+     */
+
+    public function __construct($_lead)
+    {
+            $this->lead = $_lead;
+    }
+
+    /**
+     * Get the message envelope.
+     *
+     * @return \Illuminate\Mail\Mailables\Envelope
+     */
+    public function envelope()
+    {
+        return new Envelope(
+            replyTo: 'info@boolpress.com',
+            subject: 'Nuovo progetto inserito',
+        );
+    }
+
+    /**
+     * Get the message content definition.
+     *
+     * @return \Illuminate\Mail\Mailables\Content
+     */
+    public function content()
+    {
+        return new Content(
+            view: 'emails.new_project_added',
+        );
+    }
+
+    /**
+     * Get the attachments for the message.
+     *
+     * @return array
+     */
+    public function attachments()
+    {
+        return [];
+    }
+}
+
+-creare la cartella emails in views
+-creare il file new_project_added.blade.php
+    <h1>Nuovo post inserito</h1>
+    <p>
+        Nuovo Post Inserito <br>
+        Titolo: {{$lead->title}}
+        Slug: {{$lead->slug}}
+        Contenuto: {{$lead->content}}
+    </p>
+-inserire il corpo della mail
+-creare il model lead:
+
+    protected $fillable=['title', 'slug','content'];
+
+- lanciare la migrations:
+
+- php artisan make:migration create_leads_table
+    public function up()
+    {
+        Schema::create('leads', function (Blueprint $table) {
+            $table->id();
+            $table->string('title', 150)->unique;
+            $table->string('slug');
+            $table->string('content')->nullable;
+            $table->timestamps();
+        });
+    }
+
+- php artisan migrate
+
+- aggiungere nel project controller:
+
+    use App\Mail\NewContact;
+    use App\Models\Lead;
+use Illuminate\Support\Favades\Mail;
+
+nello store, prima del redirect:
+    $new_lead = new Lead();
+    $newLead->title = $form_data['title'];
+    $newLead->content = $form_data['content'];
+    $newLead->slug = $form_data['slug'];
+    $new_lead->save();
 
 
 
