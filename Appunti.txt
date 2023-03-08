@@ -13,8 +13,8 @@ Inizializzazione progetto
 Upload file:
 - andare nel file config/filesystems.php 
     cambiare: 'default' =>env('FILESYSTEM_DISK', 'public'), da local a public
-    file env cambiare: 
-    FILESYSTEM_DISK=public da local a public
+    file .env cambiare: 
+    FILESYSTEM_DISK=da local a public
 - lanciare il comando php artisan storage:link per creare un symlink: 
 - form per caricare i dati: IMPORTANTE L'ENCTYPE, SENNò NON FA L'UPLOAD
 <form action=".." method="post" enctype="multipart/form-data">
@@ -73,15 +73,26 @@ return new class extends Migration
             {{-- @error('cover_image') @enderror  --}}
     </div>
 - modificare i metodi store ed update del controller project
-- metodo  store prima del create/fill e save
+- metodo  store prima del create/fill e save (qui crea la cartella project_images dove inserirà i file)
     if($request->has('cover_image')){
-        $path = Storage::disk('public')->put('post_images', $reqeust->cover_image);
+        $path = Storage::disk('public')->put('project_images', $reqeust->cover_image);
         $form_data['cover_image'] = $path;
     }
     aggiungere questo metodo in cima
         use Illuminate\Support\Facades\Storage;
 
-- aggiungere le regole di validazione nello StoreProjectRequest
+- metodo update:
+    if($request->has('cover_image')){
+        if($project->cover_image){
+            Storage::delete($project->cover_image);
+        }
+        
+    $path = Storage::disk('public')->put('project_images', $request->cover_image);
+    $form_data['cover_image'] = $path;
+    }
+
+
+- aggiungere le regole di validazione nello StoreProjectRequest e nell'UpdateProjectRequest
     'cover_image' => ['nullable', 'image', 'max:250'],
     messaggi
     'cover_image.image' => 'inserisci formato valido',

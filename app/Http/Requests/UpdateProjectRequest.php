@@ -30,6 +30,8 @@ class UpdateProjectRequest extends FormRequest
                 'date_project' => ['nullable','date_format:Y-m-d'],
                 'type_id' => ['nullable', 'exists:types,id'],
                 'tags' => ['exists:tags,id'],
+                'cover_image' => ['nullable', 'image'],
+
 
         ];
     }
@@ -46,6 +48,7 @@ class UpdateProjectRequest extends FormRequest
             'date_project.date_format' => 'La data inserita non è nel formato corretto',
             'type_id.exists' => 'La livello di difficoltà selezionato non è valido',
             'tags.exists' => 'Il tag selezionato non è valido',
+            'cover_image.image' => 'inserisci formato valido',
         ];
     }
 }

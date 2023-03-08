@@ -62,7 +62,7 @@ class ProjectController extends Controller
     
 
         if($request->has('cover_image')){
-            $path = Storage::disk('public')->put('post_images', $request->cover_image);
+            $path = Storage::disk('public')->put('project_images', $request->cover_image);
             $form_data['cover_image'] = $path;
         }
 
@@ -122,6 +122,15 @@ class ProjectController extends Controller
        // Lo slug viene aggiunto ai dati del form
        $form_data['slug'] = $slug;
    
+       if($request->hasFile('cover_image')){
+            if($project->cover_image){
+                Storage::delete($project->cover_image);
+            }
+            
+        $path = Storage::disk('public')->put('project_images', $request->cover_image);
+        $form_data['cover_image'] = $path;
+        }
+
        $project->update($form_data);
 
        if($request->has('tags')){

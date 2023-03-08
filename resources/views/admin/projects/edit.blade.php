@@ -19,10 +19,13 @@
                     @enderror
             </div>
             <div class="form-group mb-3">
-                <label class="control-label mb-2">
-                    Copertina
-                </label>
-                <input type="file" class="form-control @error('cover_image') is-invalid @enderror" id="cover_image" name="cover_image">
+                <div class="d-flex flex-column my-3">
+                    <label class="control-label mb-2">
+                        Copertina
+                    </label>
+                    <img class="w-25" src="{{asset('storage/'.$project->cover_image)}}" alt="{{$project->title}}">
+                </div>
+                <input type="file" class="form-control @error('cover_image') is-invalid @enderror" id="cover_image">
                 @error('cover_image')
                 <div class="alert alert-danger mt-2">{{$message}}</div>
                 @enderror
