@@ -4,10 +4,14 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller; //NECESSARIO  
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
 use App\Models\Tag;
+use App\Mail\NewContact;
+use App\Models\Lead;
 
 use App\Models\Type;
 
@@ -59,12 +63,26 @@ class ProjectController extends Controller
         // Lo slug viene aggiunto ai dati del form
         $form_data['slug'] = $slug;
     
+        //upload e restituzione path dell'upload
+        if($request->has('cover_image')){
+            $path = Storage::disk('public')->put('project_images', $request->cover_image);
+            $form_data['cover_image'] = $path;
+        }
+
         // Creo un nuovo progetto nel database utilizzando i dati del form
         $newProj = Project::create($form_data);
-        
+
         if($request->has('tags')){
             $newProj->tags()->attach($request->tags);
         }
+
+        $new_lead = new Lead();
+        $new_lead->title = $form_data['title'];
+        $new_lead->content = $form_data['content'];
+        $new_lead->slug = $form_data['slug'];
+        $new_lead->save();
+
+        Mail::to('info@boolpress.com')->send(new NewContact($new_lead));
         
         // Reindirizzamento all'index con messaggio di conferma crezione
         return redirect()->route('admin.projects.index')->with('message', 'Il project è stato creato correttamente');
@@ -114,12 +132,20 @@ class ProjectController extends Controller
        // Lo slug viene aggiunto ai dati del form
        $form_data['slug'] = $slug;
    
+       if($request->has('cover_image')){
+            if($project->cover_image){
+                Storage::delete($project->cover_image);
+            }
+            
+        $path = Storage::disk('public')->put('project_images', $request->cover_image);
+        $form_data['cover_image'] = $path;
+        }
+        
+        if($request->has('tags')){
+             $project->tags()->sync($request->tags);
+        }
        $project->update($form_data);
 
-       if($request->has('tags')){
-            $project->tags()->sync($request->tags);
-
-       }
        
        return redirect()->route('admin.projects.index')->with('message', 'La modifica del project '.$project->title.' è andata a buon fine.');
     }

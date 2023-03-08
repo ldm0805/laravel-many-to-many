@@ -32,7 +32,6 @@ class StoreTypeRequest extends FormRequest
             'name.required' => 'Il titolo è obbligatorio',
             'name.unique' => 'Questo livello di difficoltà è già presente nella pagina',
             'name.max' => 'Il nome non può essere più lungo di :max caratteri.',
-            'name.unique' => 'Questo livello di difficoltà è già presente nella pagina',
         ];
 }
 }

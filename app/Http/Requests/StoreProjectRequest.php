@@ -30,6 +30,8 @@ class StoreProjectRequest extends FormRequest
             'type_id' => ['nullable','exists:types,id'], //id della tabella categories
             //vedi name nel create di project
             'tags' => ['exists:tags,id'],
+            'cover_image' => ['nullable', 'image'],
+
 
         ];
     }
@@ -46,7 +48,7 @@ class StoreProjectRequest extends FormRequest
             'date_project.date_format' => 'La data inserita non è nel formato corretto',
             'type_id.exists' => 'Il tipo selezionato non è corretto',
             'tags.exists' => 'Il Tag selezionato non è corretto',
-
+            'cover_image.image' => 'inserisci formato valido',
         ];
     }
 }

@@ -6,7 +6,7 @@
             <h2 class="text-white">Modifica questo project</h2>
         </div>
         <div class="col-12">
-            <form action="{{route('admin.projects.update', $project->slug)}}" method="POST">
+            <form action="{{route('admin.projects.update', $project->slug)}}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="form-group mb-3">
@@ -17,6 +17,18 @@
                     @error('title')
                     <div class="alert alert-danger mt-2">{{$message}}</div>
                     @enderror
+            </div>
+            <div class="form-group mb-3">
+                <div class="d-flex flex-column my-3">
+                    <label class="control-label mb-2">
+                        Copertina
+                    </label>
+                    <img class="w-25" src="{{asset('storage/'.$project->cover_image)}}" alt="{{$project->title}}">
+                </div>
+                <input type="file" class="form-control @error('cover_image') is-invalid @enderror" id="cover_image">
+                @error('cover_image')
+                <div class="alert alert-danger mt-2">{{$message}}</div>
+                @enderror
             </div>
             <div class="form-group mb-3">
                 <label class="control-label mb-2">

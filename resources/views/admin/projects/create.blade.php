@@ -6,16 +6,25 @@
             <h2 class="text-white">Aggiungi nuovo project</h2>
         </div>
         <div class="col-12">
-            <form action="{{route('admin.projects.store')}}" method="POST">
+            <form action="{{route('admin.projects.store')}}" method="POST" enctype="multipart/form-data">
             @csrf
             <div class="form-group mb-3">
                 <label class="control-label mb-2">
                     Titolo
                 </label>
-                <input type="text" class="form-control" placeholder="Titolo" id="title" name ="title">
+                <input type="text" class="form-control" placeholder="Titolo" id="title" name="title">
                     @error('title')
                     <div class="alert alert-danger mt-2">{{$message}}</div>
                     @enderror
+            </div>
+            <div class="form-group mb-3">
+                <label class="control-label mb-2">
+                    Copertina
+                </label>
+                <input type="file" class="form-control @error('cover_image') is-invalid @enderror" id="cover_image" name="cover_image">
+                @error('cover_image')
+                <div class="alert alert-danger mt-2">{{$message}}</div>
+                @enderror
             </div>
             <div class="form-group mb-3">
                 <label class="control-label mb-2">
@@ -55,7 +64,7 @@
                 <label class="control-label mb-2">
                     Contenuto
                 </label>
-                <textarea type="text-area" class="form-control" placeholder="Contenuto" id="content" name ="content"></textarea>
+                <textarea type="text-area" class="form-control" placeholder="Contenuto" id="content" name="content"></textarea>
             </div>
             <div class="form-group mb-3">
                 <button type="submit" class="btnblue">Salva</button>

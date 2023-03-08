@@ -10,6 +10,7 @@
                 </div>
                 <div class="d-flex justify-content-center gap-2">
                     <h4>Titolo progetto: {{$project->title}}.</h4>
+                    <img class="img-top-card" src="{{asset('storage/'.$project->cover_image)}}" alt="{{$project->title}}">
                 </div>
             </div>
             <div class="col-12">
