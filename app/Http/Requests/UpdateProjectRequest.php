@@ -31,8 +31,6 @@ class UpdateProjectRequest extends FormRequest
                 'type_id' => ['nullable', 'exists:types,id'],
                 'tags' => ['exists:tags,id'],
                 'cover_image' => ['nullable', 'image'],
-
-
         ];
     }
     /**
