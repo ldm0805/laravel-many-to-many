@@ -1,3 +1,189 @@
+Inizializzazione progetto
+- composer create-project laravel/laravel:^9.2  nome_progetto
+- composer require laravel/breeze --dev
+- php artisan breeze: install
+    Scegliere Blade (num 0)
+- composer require pacificdev/laravel_9_preset
+- php artisan preset:ui bootstrap --auth
+- package.json → cambio “development” da “mix” a “vite” (con laravel 9.2 teoricamente non serve)
+- resources / js / bootstrap.js → tutte le righe devono essere commentate
+- npm i
+- npm run dev
+
+Upload file:
+- andare nel file config/filesystems.php 
+    cambiare: 'default' =>env('FILESYSTEM_DISK', 'public'), da local a public
+    file env cambiare: 
+    FILESYSTEM_DISK=public da local a public
+- lanciare il comando php artisan storage:link per creare un symlink: 
+- form per caricare i dati: IMPORTANTE L'ENCTYPE, SENNò NON FA L'UPLOAD
+<form action=".." method="post" enctype="multipart/form-data">
+- nel controller:
+use Illuminate\Support\Facades\Storage;
+public function store(){
+    //uploads è la cartella, il data è il dato e questa è di default
+    $img_path = Storage::put('uploads', $data['image']);
+    //metodo disk per salvare i file da un'altra parte
+    $img_path = Storage::put('uploads', $data['image']);
+
+}
+
+- se non presente, fare una migration per inserire il path dell'immagine nel db:
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::table('projects', function (Blueprint $table) {
+            $table->string('cover_image')->nullable()->after('slug');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::table('projects', function (Blueprint $table) {
+            $table->dropColumn('cover_image');
+        });
+    }
+};
+- lanciamo il seeder del project aggiungendo (aggiungiamo dei link tramite un link esterno) (facoltativo):
+    $newProj->cover_image = $faker->imageUrl(600, 300, 'animals', true, 'dogs', true, 'jpg');
+- aggiungere enctype nella form e l'input per il file nel create
+    <form action=".." method="post" enctype="multipart/form-data">
+    <div class="form-group mb-3">
+        <label class="control-label mb-2">
+            Copertina
+        </label>
+        <input type="file" class="form-control @error('cover_image') is-invalid @enderror" id="cover_image" name="cover_image">
+            {{-- @error('cover_image') @enderror  --}}
+    </div>
+- modificare i metodi store ed update del controller project
+- metodo  store prima del create/fill e save
+    if($request->has('cover_image')){
+        $path = Storage::disk('public')->put('post_images', $reqeust->cover_image);
+        $form_data['cover_image'] = $path;
+    }
+    aggiungere questo metodo in cima
+        use Illuminate\Support\Facades\Storage;
+
+- aggiungere le regole di validazione nello StoreProjectRequest
+    'cover_image' => ['nullable', 'image', 'max:250'],
+    messaggi
+    'cover_image.image' => 'inserisci formato valido',
+    'cover_image.max' => 'il path non è valido',
+- aggiungere cover_image nel fillable del model project
+
+- visualizzare l'immagine recuperata
+<img class="img-top" src="{{asset('storage/'.$project->cover_image)}}" alt="{{$project->title}}">
+
+
+
+
+
+
+
+
+
+
+
+
+Dopo aver inizializzato il progetto:
+- Creare un db su mysql e collegarlo nel file .env
+- Lanciare la migrations php artisan migrate 
+    Eseguiamo una prima migrazione della tabella degli utenti creata in automatico nel progetto.
+
+    DEFINIZIONE DEL PROGETTO NELLE SUE COMPONENTI E PARTI
+    - creazione Migration con il comando php artisan make:migration nome_della_migration (create_houses_table oppure update_houses_table --table=houses)
+    - Modifico la struttura della tabella :
+        Esempio:
+        Schema::create('projects', function (Blueprint $table) {
+            $table->id();
+            $table->string('title', 150)->unique();
+            $table->text('content')->nullable();
+            $table->string('slug');
+            $table->timestamps();
+        });
+    - Lancio il comando php artisan migrate per creare la tabella nel db
+    - Creare il model con il comando php artisan make:model NomeModelloAlSingolare -rcms --requests
+    - php artisan make:seeder NomeDelSeeder
+    - Se serve il faker:
+        Lanciamo il comando composer remove fzaninotto/faker 
+        Lanciamo il comando composer require fakerphp/faker --dev
+        Editiamo il metodo rum del seeder ed importiamo al suo interno la classe Faker
+        oppure
+        Inviamo i nostri dati
+    - lanciamo il seeder con il comando php artisan db:seed --class=NomeDelSeeder
+    - Lanciamo il comando per creare il controller: php artisan make:controller NomeController oppure se vogliamo le risorse php artisan make:controller --resource NomeController
+
+- Modifichiamo la rotta nel file .web con il nuovo controller: (Recupero tutti i dati per l'utente verificato)
+    Route::middleware(['auth', 'verified'])->name('admin.')->prefix('admin')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    });
+
+- Modifico in Providers/RouteServiceProviders:
+    da dashboard in admin
+- Creiamo il file admin.blade.php
+
+- Creiamo un controller con il comando : 
+
+    php artisan make:controller Admin/DashboardController (La scritta Admin crea una cartella con dentro il controller).
+-    Inseriamo questa funzione che riporta alla dashboard
+    public function index(){
+    return view('admin.dashboard');
+        }
+
+- Creiamo una cartella admin nella cartella views e ci inseriamo dashboard.blade.php
+
+
+
+- Creiamo il model con il comando : php artisan make:model Post -rcms --requests
+    Lo spostiamo dentro Admin e gli cambiamo il namespace in
+    namespace App\Http\Controllers\Admin;
+
+- Installiamo Faker
+
+- Modifichiamo il projectseeder con i dati che vogliamo inviare
+- Lanciamo il seeder
+
+
+
+
+
+- La validazione non si fa più nel controller, l'array con le validazioni si fa nello StoreProjectRequest.php e poi lo si usa nello store:
+
+StoreProjectRequest.php
+public function rules()
+{
+    return [
+        'title' => ['required', 'unique:projects', 'max:150'],
+        'content' => ['nullable'],
+
+    ];
+}
+
+metodo  store
+public function store(StoreProjectRequest $request)
+{
+    $form_data = $reqyest->validated();
+}
+
+
+
 MANY TO MANY
 
 Tabella ponte 
@@ -202,3 +388,8 @@ if($request->has('tags')){
 }
 
 - edit
+
+
+UPLOAD DI FILE E INVIO MAIL
+
+-

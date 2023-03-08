@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller; //NECESSARIO  
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use App\Models\Project;
@@ -59,12 +60,19 @@ class ProjectController extends Controller
         // Lo slug viene aggiunto ai dati del form
         $form_data['slug'] = $slug;
     
+
+        if($request->has('cover_image')){
+            $path = Storage::disk('public')->put('post_images', $request->cover_image);
+            $form_data['cover_image'] = $path;
+        }
+
         // Creo un nuovo progetto nel database utilizzando i dati del form
         $newProj = Project::create($form_data);
-        
+
         if($request->has('tags')){
             $newProj->tags()->attach($request->tags);
         }
+       
         
         // Reindirizzamento all'index con messaggio di conferma crezione
         return redirect()->route('admin.projects.index')->with('message', 'Il project è stato creato correttamente');
