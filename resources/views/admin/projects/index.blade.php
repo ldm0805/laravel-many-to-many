@@ -38,14 +38,14 @@
                     @endforelse</p>
                 <p class="tecnologiesCard">Difficoltà: {{$project->type ? $project->type->name : 'Mancante'}}</p>
                 <p class="descriptionCard">Contenuto: {{$project->content}}</p>
-                <a class="btn btn-sm btn-square btn-primary" href="{{route('admin.projects.show', $project->slug)}}" title="Visualizza project"><i class="fas fa-eye"></i></a>
-                <a class="btn btn-sm btn-square btn-warning" href="{{route('admin.projects.edit', $project->slug)}}" title="Modifica project"><i class="fas fa-edit"></i></a>
             </article>
             <div class="d-flex justify-content-end m-3">
+                <a class="btn btn-sm btn-square btn-primary" href="{{route('admin.projects.show', $project->slug)}}" title="Visualizza project"><i class="fas fa-eye"></i></a>
+                <a class="btn btn-sm btn-square btn-warning" href="{{route('admin.projects.edit', $project->slug)}}" title="Modifica project"><i class="fas fa-edit"></i></a>
                 <form class="d-inline-block" action="{{route('admin.projects.destroy', $project->slug)}}" method="POST">
                     @csrf
                     @method('DELETE')
-                    <button class="btn btn-danger bnt-sm btn-square confirm-delete-button" type="submit" title="Cancella project">
+                    <button class="btn btn-danger btn-sm btn-square confirm-delete-button" type="submit" title="Cancella project">
                         <i class="fas fa-trash"></i>
                     </button>
                 </form>

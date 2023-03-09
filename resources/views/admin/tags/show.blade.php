@@ -65,7 +65,7 @@
                     <div class="row justify-content-center mt-5">
                         <div class="col-lg-8 col-md-10 col-sm-12">
                             <div class="alert alert-primary text-center" role="alert">
-                                <h4 class="alert-heading mb-4">Non ci sono progetti sviluppati con: {{$type->name}}.</h4>
+                                <h4 class="alert-heading mb-4">Non ci sono progetti sviluppati</h4>
                                 <p class="lead">Clicca qui per agguerli.</p>
                             </div>
                         </div>
